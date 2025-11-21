@@ -1,43 +1,38 @@
 // src/app/login/page.tsx
-import { signIn } from "../auth";
+import { signIn } from "@/auth";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-6 text-center">TaskFlow</h1>
-        
-        <form
-          action={async () => {
-            "use server";
-            await signIn("credentials", {
-              email: "user@example.com",
-              password: "password123",
-              redirectTo: "/dashboard",
-            });
-          }}
-          className="mb-4"
-        >
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          >
-            Login with Email (Demo)
-          </button>
-        </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h1 className="text-2xl font-bold text-center mb-6">TaskFlow</h1>
 
+        <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition mb-3">
+          {" "}
+          <a href="/sinIn">sign in with email</a>
+        </button>
+
+        {/* Google Login */}
         <form
           action={async () => {
             "use server";
-            await signIn ("google", { redirectTo: "/dashboard" });
+            await signIn("google", { redirectTo: "/dashboard" });
           }}
         >
           <button
             type="submit"
-            className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700"
+            className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition"
           >
             Sign in with Google
           </button>
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-600">
+              Don't have an account?{" "}
+              <a href="/sinUp" className="text-blue-600 hover:underline">
+                Sign up
+              </a>
+            </p>
+          </div>
         </form>
       </div>
     </div>
