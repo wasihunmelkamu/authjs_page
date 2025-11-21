@@ -53,7 +53,13 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+model VerificationToken{
+identifier  String
+token   String @unique
+expires    DateTime
 
+@@id([identifier,token])
+}
 model Task {
   id        String   @id @default(cuid())
   title     String
