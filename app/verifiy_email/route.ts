@@ -1,9 +1,7 @@
-import { VerificationToken } from "./node_modules/.pnpm/@prisma+client@6.19.0_typescript@5.9.3/node_modules/.prisma/client/index.d";
-
 import { prisma } from "@/prisma";
 import { NextResponse } from "next/server";
-import { redirect } from "next/navigation";
-export async function GET(request: Request) {
+
+const GET=async(request: Request) =>{
   const { searchParams } = new URL(request.url);
   const token = searchParams.get("token");
   if (!token) {
@@ -32,3 +30,4 @@ export async function GET(request: Request) {
   // Redirect to login
   return NextResponse.redirect(new URL("/login?verified=1", request.url));
 }
+export default GET

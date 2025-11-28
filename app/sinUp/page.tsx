@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { sendVerificationEmail } from "@/email";
 import { generateId } from "lucia";
-import { date, email, z } from "zod";
+import {  z } from "zod";
 //password validation schema
 const SignUpSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -51,7 +51,7 @@ const SignUp = async (formData: FormData) => {
     value: {
       identifier: email,
       token,
-      expires: new Date(Date?.now() + 3600000),
+      expires: new Date(Date.now() + 3600000),
     },
   });
   // send verification email
