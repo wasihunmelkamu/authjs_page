@@ -1,9 +1,7 @@
 "use client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { signOut } from "next-auth/react";
-import { title } from "process";
-import { use } from "react";
-import { da } from "zod/locales";
+
+import { LogOut } from "@/action";
 //fetch tasks
 const fetchTask = async () => {
   const res = await fetch("/tasks");
@@ -71,12 +69,7 @@ export default function DashboardClient() {
     <div className="p-6 max-w-2x1 mx-auto">
       <div className="felx justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Your Tasks</h1>
-        <form
-          action={async () => {
-            "use server";
-            await signOut();
-          }}
-        >
+        <form action={LogOut}>
           {" "}
           <button
             type="submit"
