@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { sendVerificationEmail } from "@/email";
 import { generateId } from "lucia";
-import {  z } from "zod";
+import { z } from "zod";
 //password validation schema
 const SignUpSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -14,19 +14,20 @@ const SignUpSchema = z.object({
     .regex(/[A-Z]/, "password  must contain an uppercase letter")
     .regex(/[0-9]/, "password must contain a number"),
 });
-const SignUp = async (formData: FormData) => {
+export async function SignUp(formData: FormData) {
   "use server";
   const rawFormData = {
     name: formData.get("name") as string,
     email: formData.get("email") as string,
-    password: formData.get("passwrod") as string,
+    password: formData.get("password") as string,
   };
+  
   //validation with zod
   const validated = SignUpSchema.safeParse(rawFormData);
   if (!validated.success) {
-    const errors = validated.error.flatten().fieldErrors();
+    const errors = validated.error.flatten().fieldErrors;
 
-    throw new Error("Inalid input");
+    throw new Error("Invalid input");
   }
   const { name, email, password } = validated.data;
   //check for duplicate email
@@ -47,8 +48,8 @@ const SignUp = async (formData: FormData) => {
     data: { email, name, password: hashedPassword, emailVerified: null },
   });
   //save verfication token
-  await prisma.verificationToken.create({
-    value: {
+  await prisma.VerificationToken.create({
+    data: {
       identifier: email,
       token,
       expires: new Date(Date.now() + 3600000),
@@ -58,7 +59,7 @@ const SignUp = async (formData: FormData) => {
   await sendVerificationEmail({ email, token });
   // Redirect to 'check email' page
   redirect("/check-email");
-};
+}
 
 const SignUpPage = () => {
   return (
@@ -124,7 +125,7 @@ const SignUpPage = () => {
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
-            <a href="/login" className="text-blue-600 hover:underline">
+            <a href="/Login" className="text-blue-600 hover:underline">
               Log in
             </a>
           </p>
@@ -133,6 +134,4 @@ const SignUpPage = () => {
     </div>
   );
 };
-export default SignUp;
-SignUpSchema;
-SignUpPage;
+export default SignUpPage;

@@ -7,10 +7,39 @@ export default function LoginPage() {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-6">TaskFlow</h1>
 
-        <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition mb-3">
-          {" "}
-          <a href="/sinIn">sign in with email</a>
-        </button>
+        {/* Email/Password Login */}
+        <form
+          action={async (formData) => {
+            "use server";
+            await signIn("credentials", {
+              email: formData.get("email"),
+              password: formData.get("password"),
+              redirectTo: "/dashboard",
+            });
+          }}
+          className="mb-4"
+        >
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            className="w-full px-3 py-2 mb-2 border rounded"
+            required
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            className="w-full px-3 py-2 mb-3 border rounded"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+          >
+            Sign in with Email
+          </button>
+        </form>
 
         {/* Google Login */}
         <form
@@ -25,15 +54,16 @@ export default function LoginPage() {
           >
             Sign in with Google
           </button>
-          <div className="mt-4 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
-              <a href="/sinUp" className="text-blue-600 hover:underline">
-                Sign up
-              </a>
-            </p>
-          </div>
         </form>
+
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-600">
+            Don't have an account?{" "}
+            <a href="/sinUp" className="text-blue-600 hover:underline">
+              Sign up
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
