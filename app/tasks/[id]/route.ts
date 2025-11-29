@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
-import { error } from "console";
+
 import { request } from "http";
 
 import { NextResponse } from "next/server";
