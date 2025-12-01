@@ -9,7 +9,7 @@ export default function LoginPage() {
 
         {/* Email/Password Login */}
         <form
-          action={async (formData) => {
+          action={async (formData: FormData) => {
             "use server";
             await signIn("credentials", {
               email: formData.get("email"),
@@ -19,20 +19,28 @@ export default function LoginPage() {
           }}
           className="mb-4"
         >
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            className="w-full px-3 py-2 mb-2 border rounded"
-            required
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            className="w-full px-3 py-2 mb-3 border rounded"
-            required
-          />
+          <div>
+            <div>
+              <label htmlFor="name">Full Name</label>
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                className="w-full px-3 py-2 mb-2 border rounded"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="password">Full Name</label>
+              <input
+                name="password"
+                type="password"
+                placeholder="Password"
+                className="w-full px-3 py-2 mb-3 border rounded"
+                required
+              />
+            </div>
+          </div>
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"

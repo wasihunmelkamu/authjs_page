@@ -21,7 +21,7 @@ export async function SignUp(formData: FormData) {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
-  
+
   //validation with zod
   const validated = SignUpSchema.safeParse(rawFormData);
   if (!validated.success) {

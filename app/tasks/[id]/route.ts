@@ -27,7 +27,7 @@ export async function POST(request:Request){
  const task=await prisma.task.create({ data:{title:title:title.tirm(),userId:session.user.id}});
  return NextResponse.json({task},{status:201});
 }
-//PATCH/PUT/api/tasls/[id]-update tas
+//PATCH/PUT/api/tasks/[id]-update tas
 
 
 

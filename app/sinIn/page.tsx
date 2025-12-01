@@ -23,7 +23,7 @@ export default function SingIn() {
             htmlFor="name"
             className="block text-sm font-medium text-gray-700"
           >
-           Email
+            Email
           </label>
           <input
             className="text-blue-600  underline"
@@ -37,7 +37,7 @@ export default function SingIn() {
             htmlFor="name"
             className="block text-sm font-medium text-gray-700"
           >
-          Password
+            Password
           </label>
           <input
             className="text-blue-600 hover:underline"
@@ -50,9 +50,7 @@ export default function SingIn() {
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-red-700 transition"
-        ><a href="/dashboard"> Login</a>
-          
-        </button>
+        ></button>
       </form>
     </div>
   );

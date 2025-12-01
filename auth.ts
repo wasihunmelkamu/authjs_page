@@ -14,6 +14,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        name: { label: "Name", type: "name" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
@@ -24,10 +25,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (!user || !user.password) return null;
         {
-          /* if (!user.emailVerified) {
-        //send email varification
-        throw new Error("Email not verified");
-      } */
+          if (!user.emailVerified) {
+            //send email varification
+            throw new Error("Email not verified");
+          }
         }
         const isValid = await bcrypt.compare(
           credentials.password,
