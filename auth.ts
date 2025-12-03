@@ -8,14 +8,20 @@ import bcrypt from "bcryptjs";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+
   providers: [
-    Google,
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+
     Credentials({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
         name: { label: "Name", type: "name" },
       },
+
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
@@ -24,16 +30,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         });
 
         if (!user || !user.password) return null;
-        {
-          if (!user.emailVerified) {
-            //send email varification
-            throw new Error("Email not verified");
-          }
+
+        if (!user.emailVerified) {
+          throw new Error("Email not verified");
         }
+
         const isValid = await bcrypt.compare(
           credentials.password,
           user.password
         );
+
         if (!isValid) return null;
 
         return {
@@ -45,11 +51,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+
   callbacks: {
     async session({ session, user }) {
-      session.user.id = user.id;
+      if (session.user) {
+        session.user.id = user.id;
+      }
       return session;
     },
   },
+
   session: { strategy: "database" },
 });
