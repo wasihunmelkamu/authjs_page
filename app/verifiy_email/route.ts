@@ -30,5 +30,5 @@ export async function GET(request: Request) {
     where: { token: VerficationToken.token },
   });
   //redirect to login
-  return NextResponse.redirect(new URL("/login?verified=1", request.url));
+  return NextResponse.redirect(new URL("/Login?verified=1", request.url));
 }
