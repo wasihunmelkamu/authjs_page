@@ -65,6 +65,7 @@ export default function DashboardClient() {
   };
   if (isLoading) return <div>Loading..</div>;
   if (error) return <div>Error:{(error as Error).message}</div>;
+
   return (
     <div className="p-6 max-w-2x1 mx-auto">
       <div className="felx justify-between items-center mb-6">

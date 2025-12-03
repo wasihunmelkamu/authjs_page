@@ -48,7 +48,7 @@ export async function SignUp(formData: FormData) {
     data: { email, name, password: hashedPassword, emailVerified: null },
   });
   //save verfication token
-  await prisma.VerificationToken.create({
+  await prisma.verificationToken.create({
     data: {
       identifier: email,
       token,
