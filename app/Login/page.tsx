@@ -1,7 +1,9 @@
 // src/app/login/page.tsx
-import { signIn } from "@/auth";
+import { signIn,auth } from "@/auth";
+import { redirect } from "next/dist/server/api-utils";
 
 export default function LoginPage() {
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
@@ -12,8 +14,8 @@ export default function LoginPage() {
           action={async (formData: FormData) => {
             "use server";
             await signIn("credentials", {
-              email: formData.get("email"),
-              password: formData.get("password"),
+              email: formData.get("email") as string,
+              password: formData.get("password") as string,
               redirectTo: "/dashboard",
             });
           }}
@@ -21,7 +23,7 @@ export default function LoginPage() {
         >
           <div>
             <div>
-              <label htmlFor="name">Full Name</label>
+              <label htmlFor="name">Email</label>
               <input
                 name="email"
                 type="email"
@@ -31,7 +33,7 @@ export default function LoginPage() {
               />
             </div>
             <div>
-              <label htmlFor="password">Full Name</label>
+              <label htmlFor="password">Password</label>
               <input
                 name="password"
                 type="password"
