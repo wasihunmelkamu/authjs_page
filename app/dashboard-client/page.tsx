@@ -4,13 +4,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { LogOut } from "@/action";
 //fetch tasks
 const fetchTask = async () => {
-  const res = await fetch("/tasks");
+  const res = await fetch("api/tasks");
   if (!res.ok) throw new Error("Failed  to fetch tasks");
   return res.json();
 };
 //create tasks
 const createTasks = async (title: string) => {
-  const res = await fetch("/taks", {
+  const res = await fetch("api/tasks", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title }),
@@ -19,11 +19,11 @@ const createTasks = async (title: string) => {
   return res.json();
 };
 // update tasks
-const UpdateTask = async (id: string, complted: boolean) => {
-  const res = await fetch(`/tasks${id}`, {
+const UpdateTask = async (id: string, completed: boolean) => {
+  const res = await fetch(`api/tasks${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ complted }),
+    body: JSON.stringify({ completed }),
   });
   if (!res.ok) throw new Error("Failed to updte task");
 };
@@ -40,8 +40,8 @@ export default function DashboardClient() {
     },
   });
   const UpdateTaskMutation = useMutation({
-    mutationFn: ({ id, complted }: { id: string; complted: boolean }) =>
-      UpdateTask(id, complted),
+    mutationFn: ({ id, completed }: { id: string; completed: boolean }) =>
+      UpdateTask(id, completed),
     onMutate: async (newTask) => {
       //optimistc update}
 
@@ -49,7 +49,7 @@ export default function DashboardClient() {
       const prevTasks = queryClient.getQueryData<{ tasks: any[] }>(["tasks"]);
       queryClient.setQueryData(["tasks"], (old: any) => ({
         tasks: old.tasks.map((t: any) =>
-          t.id === newTask ? { ...t, complted: newTask.complted } : t
+          t.id === newTask ? { ...t, completed: newTask.completed } : t
         ),
       }));
     },
@@ -58,6 +58,7 @@ export default function DashboardClient() {
     e.preventDefault();
     const input = e.currentTarget.taskInput;
     const title = input.value.trim();
+    console.log()
     if (title) {
       createTaskMuation.mutate({ title });
       input.value = "";
@@ -81,7 +82,12 @@ export default function DashboardClient() {
         </form>
       </div>
       {/* create task */}
-      <form>
+      <form onSubmit={handleCreate}>
+        <input
+          name="taskInput"
+          className="bg-white py-2 px-3 rounded-2xl"
+          placeholder="Enter your task"
+        />
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
@@ -99,16 +105,16 @@ export default function DashboardClient() {
           >
             <input
               type="checkbox"
-              checked={task.complted}
+              checked={task.completed}
               onChange={(e) =>
                 UpdateTaskMutation.mutate({
                   id: task.id,
-                  complted: e.target.checked,
+                  completed: e.target.checked,
                 })
               }
               className="h-5 w-5"
             />
-            <span className={task.complted ? "line-through text-gray-500" : ""}>
+            <span className={task.completed ? "line-through text-gray-500" : ""}>
               {task.title}
             </span>
           </li>
