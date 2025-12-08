@@ -20,14 +20,14 @@ interface TasksPage {
 
 // Fetch page of tasks
 async function fetchTasksPage(pageParam = 1): Promise<TasksPage> {
-  const res = await fetch(`/tasks?page=${pageParam}&limit=10`);
+  const res = await fetch(`api/tasks?page=${pageParam}&limit=10`);
   if (!res.ok) throw new Error("Failed to fetch tasks");
   return res.json(); // Expected: { tasks: [], nextPage: 2, hasMore: true }
 }
 
 // Create task
 async function createTask(title: string) {
-  const res = await fetch("/tasks", {
+  const res = await fetch("api/tasks", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title }),
@@ -38,7 +38,7 @@ async function createTask(title: string) {
 
 // Update task
 async function updateTask(id: string, completed: boolean) {
-  const res = await fetch(`/tasks/${id}`, {
+  const res = await fetch(`api/tasks/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ completed }),
@@ -190,3 +190,4 @@ export default function TaskListInfinite() {
       </div>
     </div>
   );
+}
