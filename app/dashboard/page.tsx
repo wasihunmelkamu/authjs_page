@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/prisma";
 import { redirect } from "next/navigation";
 import TaskListClient from "../TaskListClient/page";
+import TaskListInfinite from "./TaskListInfinite";
 
 export default async function Dashboard() {
   const session = await auth();
@@ -15,5 +16,5 @@ export default async function Dashboard() {
     orderBy: { createdAt: "desc" },
   });
 
-  return <TaskListClient initialTasks={tasks} />;
+  return <TaskListInfinite />;
 }
