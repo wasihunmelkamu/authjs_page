@@ -10,6 +10,7 @@ export async function GET(request: Request) {
   }
 
   const { searchParams } = new URL(request.url);
+ 
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "10");
   const skip = (page - 1) * limit;
@@ -35,6 +36,7 @@ export async function GET(request: Request) {
 //create task
 
 export async function POST(request: Request) {
+  console.log(Request)
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -54,3 +56,4 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ task }, { status: 201 });
 }
+//

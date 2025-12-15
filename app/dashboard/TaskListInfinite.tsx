@@ -20,7 +20,7 @@ interface TasksPage {
 
 // Fetch page of tasks
 async function fetchTasksPage(pageParam = 1): Promise<TasksPage> {
-  const res = await fetch(`api/tasks?page=${pageParam}&limit=10`);
+  const res = await fetch(`api/tasks?page=${pageParam}&limit=2`);
   if (!res.ok) throw new Error("Failed to fetch tasks");
   return res.json(); // Expected: { tasks: [], nextPage: 2, hasMore: true }
 }
