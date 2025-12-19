@@ -1,12 +1,12 @@
 
 import { auth } from "@/auth";
-import { NextResponse } from "next/server";
+import { NextResponse,NextRequest } from "next/server";
 import { prisma } from "@/prisma";
 export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } }
+  request:NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  
+  const {id}=await params
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -14,7 +14,7 @@ export async function PATCH(
 
   const { completed } = await request.json();
   const task = await prisma.task.findUnique({
-    where: { id: params.id, userId: session.user.id },
+    where: { id: id, userId: session.user.id },
   });
 
   if (!task) {
