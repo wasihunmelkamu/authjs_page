@@ -10,7 +10,7 @@ export async function middlewares(request: NextRequest) {
   if (session?.user) {
     Sentry.setUser({
       id: session.user.id,
-      email: session?.user.email,
+      email: session?.user.email as string,
       username: session.user.name || undefined,
     });
   }
