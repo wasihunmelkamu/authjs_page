@@ -1,6 +1,6 @@
 // src/app/login/page.tsx
 import { signIn,auth } from "@/auth";
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/navigation";
 
 export default function LoginPage() {
 

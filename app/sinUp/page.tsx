@@ -4,7 +4,19 @@ import { redirect } from "next/navigation";
 import { sendVerificationEmail } from "@/email";
 import { generateId } from "lucia";
 import { z } from "zod";
+import { authRatelimit } from "@/ratelimit";
+import { headers } from "next/headers";
 //password validation schema
+
+const GetIpAddress = async () => {
+  const h = headers() as unknown as Record<string, string | undefined>;
+
+  return (
+    h["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    h["x-real-ip"] ||
+    "127.0.0.1"
+  );
+};;
 const SignUpSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email"),
@@ -61,7 +73,19 @@ export async function SignUp(formData: FormData) {
   redirect("/check-email");
 }
 
-const SignUpPage = () => {
+const SignUpPage = async () => {
+  const ip = await GetIpAddress();
+  const { success } = await authRatelimit.limit(ip);
+  if (!success) {
+    return (
+      <div className="p-8 text-center">
+        {" "}
+        <h2 className="text-xl text-red-600">Too many requests</h2>
+        <p>please wait 10 secondes before trying gain .</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
