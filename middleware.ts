@@ -1,22 +1,27 @@
+import { request } from "http";
 // src/middleware.ts
 import { auth } from "@/auth";
-export { auth as middleware } from "@/auth";
 
-import * as Sentry from "@sentry/nextjs";
-import { NextRequest } from "next/server";
-export async function middlewares(request: NextRequest) {
+import { NextRequest, NextResponse } from "next/server";
+import { email } from "zod";
+export async function middleware(request: NextRequest) {
   const session = await auth();
-
-  if (session?.user) {
-    Sentry.setUser({
-      id: session.user.id,
-      email: session?.user.email as string,
-      username: session.user.name || undefined,
-    });
-  }
   if (session && request.nextUrl.pathname === "/Login") {
-    return Response.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
+  //call lightweight Api to log sentry user
+  if (session?.user) {
+    fetch(`${request.nextUrl.origin}/api/set-sentry-user`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: session.user.id,
+        email: session.user.email,
+        name: session.user.name,
+      }),
+    }).catch(() => {});
+  }
+  return NextResponse.next()
 }
 
 export const config = {
