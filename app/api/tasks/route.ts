@@ -10,6 +10,13 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  if (session?.user) {
+    // set user for this Api request
+    Sentry.setUser({
+      id: session.user.id,
+      email: session.user.email as string,
+    });
+  }
   const { searchParams } = new URL(request.url);
 
   const page = parseInt(searchParams.get("page") || "1");
