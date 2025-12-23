@@ -9,7 +9,6 @@ import bcrypt from "bcryptjs";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
-
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -54,13 +53,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
 
   callbacks: {
-    async session({ session, user }) {
+    async session({ session,user }) {
       if (session.user) {
-        session.user.id = user.id;
+        session.user.id =user.id;
       }
       return session;
     },
   },
 
   session: { strategy: "database" },
+  
 });

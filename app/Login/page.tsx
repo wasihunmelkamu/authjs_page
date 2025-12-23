@@ -1,9 +1,9 @@
 // src/app/login/page.tsx
-import { signIn,auth } from "@/auth";
+import { signIn, auth } from "@/auth";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default function LoginPage() {
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
@@ -23,7 +23,7 @@ export default function LoginPage() {
         >
           <div>
             <div>
-              <label htmlFor="name">Email</label>
+              <label htmlFor="email">Email</label>
               <input
                 name="email"
                 type="email"
@@ -69,9 +69,9 @@ export default function LoginPage() {
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}
-            <a href="/sinUp" className="text-blue-600 hover:underline">
-              Sign up
-            </a>
+            <Link href="/sinUp" className="text-blue-600 hover:underline">
+              <button> Sign up</button>
+            </Link>
           </p>
         </div>
       </div>
